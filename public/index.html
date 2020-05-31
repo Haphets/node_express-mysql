@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body>
+    <el-container id="app">
+        <el-container style="height: 1000px;">
+            <el-aside width="300px" style="background-color: rgb(238, 241, 246)">
+                <el-menu default-active="1" :default-openeds="openeds" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                    background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+                    <el-submenu index="1">
+                        <template slot="title">
+                            <i class="el-icon-setting"></i>
+                            <span>降级规则管理</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item index="1-1">
+                                <i class="el-icon-location"></i>
+                                降级规则</el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
+        </el-container>
+        <el-container>
+            <el-header style="height: 56px; text-align: right; font-size: 12px;">
+                <el-dropdown>
+                    <span class="el-dropdown-link" style="color: #409EFF;">
+                        {{loginUser}}<i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>退出登陆</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </el-header>
+            <el-main>
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="id" label="优先级" width="80">
+                    </el-table-column>
+                    <el-table-column prop="business" label="业务类型" width="80">
+                    </el-table-column>
+                    <el-table-column prop="action" label="降级行为">
+                    </el-table-column>
+                    <el-table-column prop="reglate_start_time" label="降级开始时间">
+                    </el-table-column>
+                    <el-table-column prop="reglate_end_time" label="降级结束时间">
+                    </el-table-column>
+                    <el-table-column prop="filter" label="降级规则" width="180">
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-main>
+        </el-container>
+    </el-container>
+</body>
+
+<style>
+    .el-header {
+        background-color: rgb(84, 92, 100);
+        line-height: 56px;
+    }
+
+    .el-aside {
+        color: #333;
+    }
+</style>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- vue axios 的-->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                tableData: [],
+                loginUser: "xxxx",
+                openeds: ['1']
+            }
+        },
+        mounted: function () {
+            var _this = this
+            axios.get('/rule/index').then(function (res) {
+                console.log(res.data.data);
+                _this.tableData = res.data.data;
+            })
+        },
+        methods: {
+            handleClick(row) {
+                console.log(row);
+            },
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            }
+        }
+    })
+</script>
+
+</html>
